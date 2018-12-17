@@ -4,6 +4,9 @@ archive/**
 blog/
 blog/**
 db.sqlite3
+elsa/secrets.py
+elsa/settings.py
+elsa/wsgi.py
 log/**
 media/**
 **/migrations/**
