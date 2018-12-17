@@ -1,0 +1,61 @@
+# ELSA
+archive/
+archive/**
+blog/
+blog/**
+db.sqlite3
+log/**
+media/**
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+populate_blog.py
+populate_elsa.py
+populate__master.py
+populate_user.py
+temporary/
+temporary/**
+
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyc
+
+# C extensions
+*.so
+
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
