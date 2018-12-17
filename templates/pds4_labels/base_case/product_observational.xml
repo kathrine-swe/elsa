@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://pds.nasa.gov/pds4/schema/released/pds/v1/PDS4_PDS_1800.sch"  schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Observational
+    xmlns="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:pds="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1
+	http://pds.nasa.gov/pds4/schema/released/pds/v1/PDS4_PDS_1800.xsd">
+    <Identification_Area>
+        <logical_identifier></logical_identifier>
+        <version_id>1.0</version_id>
+        <title></title>
+        <information_model_version></information_model_version>
+        <product_class>Product_Observational</product_class>
+    </Identification_Area>
+    <Observation_Area>
+        <Primary_Result_Summary>
+            <purpose></purpose>
+            <processing_level></processing_level>
+            <Science_Facets>
+                <domain></domain>
+                <discipline_name></discipline_name>
+      		<facet1></facet1>
+             </Science_Facets>
+        </Primary_Result_Summary>
+        <Investigation_Area>
+        </Investigation_Area>
+    </Observation_Area>
+    <Reference_List>
+    </Reference_List>
+    <File_Area_Observational>
+    </File_Area_Observational>
+</Product_Observational>

@@ -1,0 +1,69 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+
+{% block title_block %}
+Product Collection Editor
+{% endblock %}
+
+
+{% block main_header_block %}
+Product Document Editor -- {{ product_document.lid }} 
+{% endblock %}
+
+
+{% block body_block %}
+<!--First row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-8">
+    Here we will be able to edit the details of our Product Document label.
+    <hr/>
+    This section is currently a work in progress.  Submit buttons are taken down until completion.
+    </div>
+    <!--/.First column-->
+    <!--Second column-->
+    <div class="col-md-4">
+        <a href="{% url 'main:construction' %}"><button type="button" class="btn btn-danger">Delete {{ product_bundle }} Label</button></a>
+        
+    </div>
+    <!--/.Second column-->
+</div>
+<!--/.First row-->
+<!--Eighth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Document</h3><br/>
+    </div>
+</div>
+<!--/.Eighth row-->
+<!--Ninth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-8">
+        <form>
+        {{ edit_document.as_p }}
+        {{ edit_document_edition.as_p }}
+        </form>
+    </div>
+    <!--Second column-->
+    <div class="col-md-4">
+        Don't see your author?  Add them to our database.
+        <form>
+        {{ author_form.as_p }}
+        </form>
+    </div>
+</div>
+<!--/.Ninth row-->
+<!--Ninth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-4">
+
+        <a href="{% url 'build:bundle_detail' bundle.pk %}"><button type="button" class="btn btn-default">Back to Bundle</button></a>
+    </div>
+</div>
+<!--/.Ninth row-->
+
+{% endblock %}

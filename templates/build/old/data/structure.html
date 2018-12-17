@@ -1,0 +1,46 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+{% block title_block %}
+Data {{ data.processing_level }}
+{% endblock %}
+
+{% block main_header_block %}
+Data {{ data.processing_level }} - {{ data.name }}
+{% endblock %}
+
+{% block about_header_block %}
+Some information about this page goes here.
+{% endblock %}
+
+
+{% block body_block %}
+<!--Row-->
+<div id="row">
+    <!--Column-->
+    <div id="col-sm-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Edit Data Template for {{ data.name }}</h3> 
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+<!--Row-->
+<div id="row">
+    <!--Column-->
+    <div id="col-xs-6">
+        <form id="data_structure_form" action="#">
+            {% csrf_token %}
+            {{ form_data_structure }}
+            <input type="submit" value="Submit" class="btn btn-default"/>
+        </form>
+    </div>
+    <!--/.Column-->
+    <!--Column-->
+    <div id="help col-xs-6">
+        <p>h</p>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+
+{% endblock %}

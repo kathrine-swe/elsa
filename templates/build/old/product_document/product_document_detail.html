@@ -1,0 +1,35 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+
+{% block title_block %}
+Product Document Detail -- {{ document }}
+{% endblock %}
+
+
+{% block main_header_block %}
+Product Document Detail -- {{ document }} 
+{% endblock %}
+
+
+{% block body_block %}
+<!--First row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-8">
+    Here we will be able to edit the details of our Product Document label.
+    <hr/>
+    Unfortunately, this section of ELSA is yet to be implemented.  If you would like to be notified of when this section is online, feel free to email the developer Kay Sweebe at ksweebe@nmsu.edu.
+    <hr/>
+    If you would like to help out Kay and implement this section yourself, feel free to inquire about becoming part of the development team by e-mailing Kay.
+    </div>
+    <!--/.First column-->
+    <!--Second column-->
+    <div class="col-md-4">
+        <a href="{% url 'main:construction' %}"><button type="button" class="btn btn-danger">Delete {{ document }} Label</button></a>
+    </div>
+    <!--/.Second column-->
+</div>
+<!--/.First row-->
+
+{% endblock %}

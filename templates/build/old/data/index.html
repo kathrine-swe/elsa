@@ -1,0 +1,146 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+{% block title_block %}
+Data
+{% endblock %}
+
+{% block main_header_block %}
+Data Collection
+{% endblock %}
+
+{% block about_header_block %}
+The data collection consists of the following subcollections: calibrated data, derived data, raw data, and reduced data.  Your data will fall into at least one of these categories.  <br/><br/>An abbreviated or reduced-resolution version of the data should be located in the browse collection rather than in this collection, the data collection.  
+{% endblock %}
+
+
+
+{% block body_block %}
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Add Data Product(s)</h3>       
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-sm-8 col-md-8">
+
+        <form method="post">
+            {% csrf_token %}
+            <div id='form_data'>
+                {{ form_data }}
+            </div>
+            <input type="submit" value="Submit" class="btn btn-default"/>
+        </form>
+    </div>
+    <!--/.Column-->
+    <!--Column-->
+    <div class="help col-sm-4 col-md-4">
+        <div class="form_data">
+            Add Help Here. <br/><br/><br/>
+        </div>
+        {% if new_data_set %}
+        <hr/>
+        <div class="row">
+
+            <!--Card-->
+            <a href="{{ new_data_set.get_absolute_url }}">
+            <div class="card">
+                <!--Card image-->
+                <!-----------------------ADD IFS FOR IMAGES--------------------->
+                <img class="img-fluid" src="{% static 'images/calibrated.png' %}" alt="Data Image"/>
+                <!--Card content-->
+                <div class="card-body">
+                    <!--Title-->
+                    <h4 class="card-title">{{ new_data_set.name }}</h4>
+                    <!--Text-->
+                    <p class="card-text">{{ new_data_set.processing_level }}</p>
+                    <p class="card-text">{{ new_data_set.repetitions }}</p>
+
+                    <!--Buttons-->
+                    <a href="{% url 'main:construction' %}">
+                        <button type="button" class="btn btn-default">Go to {{ new_data_set.name }} page</button> 
+                    </a>
+                </div>
+            </div>
+            </a>
+            <!--/.Card-->
+
+        </div>
+        <!--/.Row-->
+        {% endif %}
+    </div>
+    <!--/.Column-->
+    
+</div>
+<!--/.Row-->
+<!--Divider-->
+<hr/>
+<!--/.Divider-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Current Data Products</h3>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Second row-->
+<!--Row-->
+<div class="row pt-2">
+{% if data_set %}    
+    {% for data in data_set %}
+    <!--Column-->
+    <div class="col-sm-6 col-md-3">
+        <!--Card-->
+        <a href="{{ data.get_absolute_url }}">
+        <div class="card">
+            <!--Card image-->
+            <!-----------------------ADD IFS FOR IMAGES--------------------->
+            <img class="img-fluid" src="{% static 'images/calibrated.png' %}" alt="Data Image">
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">{{ data.title }}</h4>
+                <!--Text-->
+                <p class="card-text">{{ data.name }}</p>
+                <p class="card-text">Processing Level: {{ data.processing_level }}</p>
+                <p class="card-text">Structure: {{ data.structure }}</p>
+                <!--Buttons-->
+                <a href="{% url 'main:construction' %}">
+                    <button type="button" class="btn btn-danger">Remove</button> 
+                </a>
+            </div>
+        </div>
+        </a>
+        <!--/.Card-->
+    </div>
+    <!--/.Column-->
+    {% endfor %}
+{% else %}
+    <!--Column-->
+    <div class="col-sm-6 col-md-3">
+        <!--Card-->
+        <div class="card">
+            <!--Card image-->
+            <img class="img-fluid" src="{% static 'images/null.png' %}" alt="Instrument Image">
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">Null</h4>
+                <!--Text-->
+                <p class="card-text">No data is associated with {{ bundle }}.</p>
+            </div>
+        </div>
+        <!--/.Card-->
+    </div>
+    <!--/.Column-->
+{% endif %}
+</div>
+<!--/.Third row-->
+{% endblock %}

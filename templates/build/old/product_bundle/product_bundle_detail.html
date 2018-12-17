@@ -1,0 +1,32 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+
+{% block title_block %}
+Product Bundle Detail
+{% endblock %}
+
+
+{% block main_header_block %}
+Product Bundle Detail -- {{ product_bundle.lid }} 
+{% endblock %}
+
+
+{% block body_block %}
+<!--First row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-8">
+    If people back to this, just give them nav buttons to go elsewhere maybe??
+    </div>
+    <!--/.First column-->
+    <!--Second column-->
+    <div class="col-md-4">
+        <a href="{% url 'main:construction' %}"><button type="button" class="btn btn-default">Edit {{ product_bundle }} Label</button></a>
+        
+    </div>
+    <!--/.Second column-->
+</div>
+<!--/.First row-->
+
+{% endblock %}

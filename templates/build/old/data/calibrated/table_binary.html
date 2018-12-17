@@ -1,0 +1,48 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+{% block title_block %}
+Data Calibrated
+{% endblock %}
+
+{% block main_header_block %}
+Data Calibrated Collection - Table Binary
+{% endblock %}
+
+{% block about_header_block %}
+Table binary information goes here.  For now, enjoy this filler text.  Isn't it lovely?
+{% endblock %}
+
+{% block body_block %}
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Table Binary Label</h3><br/>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div id='form_data_structure'>
+            Needs Table Binary Form
+            </div>
+            <input type="submit" value="Submit" class="btn btn-default"/>
+        </form>
+    </div>
+    <!--/.Column-->
+    <!--Column-->
+    <div class="col-md-6">
+        <div class="help">
+        </div>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+
+{% endblock %}

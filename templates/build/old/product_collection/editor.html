@@ -1,0 +1,106 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+
+{% block title_block %}
+Product Collection Editor
+{% endblock %}
+
+
+{% block main_header_block %}
+Product Collection Editor -- {{ product_collection.lid }} 
+{% endblock %}
+
+
+{% block body_block %}
+<!--First row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-8">
+    Here we will be able to edit the details of our Product Collection label.
+    <hr/>
+    This section is currently a work in progress.  This message will be deleted once it is complete.
+    </div>
+    <!--/.First column-->
+    <!--Second column-->
+    <div class="col-md-4">
+        <!--<a href="{% url 'elsa:construction' %}"><button type="button" class="btn btn-danger">Delete {{ product_bundle }} Label</button></a>-->
+        
+    </div>
+    <!--/.Second column-->
+</div>
+<!--/.First row-->
+<!--Second row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Identification Area</h3><br/>
+    </div>
+</div>
+<!--/.Second row-->
+<!--Third row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+    </div>
+</div>
+<!--/.Third row-->
+
+<!--Fourth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Context Area</h3><br/>
+    </div>
+</div>
+<!--/.Fourth row-->
+<!--Fifth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+    </div>
+</div>
+<!--/.Fifth row-->
+
+<!--Sixth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Reference List</h3><br/>
+    </div>
+</div>
+<!--/.Sixth row-->
+<!--Seventh row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+    </div>
+</div>
+<!--/.Seventh row-->
+
+<!--Eighth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Bundle</h3><br/>
+    </div>
+</div>
+<!--/.Eighth row-->
+<!--Ninth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+    </div>
+</div>
+<!--/.Ninth row-->
+<!--Ninth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-4">
+
+        <a href="{% url 'build_a_bundle:bundle_detail' bundle.pk %}"><button type="button" class="btn btn-default">Back to Bundle</button></a>
+    </div>
+</div>
+<!--/.Ninth row-->
+
+{% endblock %}

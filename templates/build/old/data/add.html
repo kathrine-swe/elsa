@@ -1,0 +1,122 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+{% block title_block %}
+Data Calibrated
+{% endblock %}
+
+{% block main_header_block %}
+Add Data {{ data_type.title }} Templates
+{% endblock %}
+
+{% block about_header_block %}
+{% endblock %}
+
+{% block body_block %}
+<!--Third row-->
+<div class="row pt-2">
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Choose a Template Type for your Data</h3><br/>
+    </div>
+</div>
+<!--/.Third row-->
+<!--Sixth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div id='form_data_template'>
+            {{ form_data_template }}
+            </div>
+            <div id='form_field_template'>
+            {{ form_field_template }}
+            </div>
+            <input type="submit" value="Next" class="btn btn-success"/>
+        </form>
+    </div>
+    <!--/.First column-->
+    <!--First column-->
+    <div class="col-md-6">
+        <div class="help">
+        </div>
+    </div>
+    <!--/.First column-->
+</div>
+<!--/.Sixth row-->
+<hr/>
+
+
+<!--Sixth row-->
+
+{% if template_chosen %}
+    {% if template_style == 'Table_Character_Delimited' %}
+    <div class="row pt-2">
+        <!--Column-->
+        <div class="col-md-12">
+            <form method="post">
+                {% csrf_token %}
+                <div id='form_table_character_delimited'>
+                {{ form_table_character_delimited }}
+                </div>
+                <input type="submit" value="Next" class="btn btn-success"/>
+            </form>
+        </div>
+        <!--/.Column-->
+    </div>
+    <!--/.Sixth row-->
+    {% endif %}
+<hr/>
+{% endif %}
+
+
+
+
+
+
+
+
+
+<!--Sixth row-->
+<div class="row pt-2">
+        {% if template_added %}
+            <!--Last column-->
+            <div class="col-md-3">
+                <!--Last card-->
+                <a href="{% url 'build:data_calibrated_add' bundle.pk %}">
+                <div class="card">
+                    <!--Card image-->
+                    <img class="img-fluid" src="{% static 'images/love.jpg' %}" alt="An image representing success.">
+                    <!--Card content-->
+                    <div class="card-body">
+                        <!--Title-->
+                        <h4 class="card-title">Template Added</h4>
+                        <!--Text-->
+                        <p class="card-text">I (k) am currently in the midst of making a better success message for adding templates.  This is the newest addition to ELSA (like the week before DPS new).  Bare with me =].</p>
+                    </div>
+                </div>
+                </a>
+                <!--/.Last card-->
+            </div>
+            <!--/.Last column-->
+        {% endif %}
+
+</div>
+<!--/.Sixth row-->
+<hr/>
+
+<!--Sixth row-->
+<div class="row pt-2">
+    <!--First column-->
+    <div class="col-md-12">
+        <a href="{{ bundle.get_absolute_url }}">
+        <button type="button" class="btn btn-default">
+            <i class="fa fa-arrow-circle-left"></i>
+            Back to {{ bundle }}'s Bundle Detail
+        </button>
+        </a>
+    </div>
+    <!--/.First column-->
+</div>
+<!--/.Sixth row-->
+{% endblock %}

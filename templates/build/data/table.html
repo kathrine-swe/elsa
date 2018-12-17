@@ -1,0 +1,164 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+{% block title_block %}
+Data
+{% endblock %}
+
+{% block main_header_block %}
+{{ product_observational.type_of }} Data
+{% endblock %}
+
+{% block about_header_block %}
+{{ product_observational.type_of }} Data About Me Section Here
+
+Multiple observationals can be added to a single file.  Just let us know which observational data is found in your file and give us some information about it's header, fields, and groups.
+{% endblock %}
+
+
+
+{% block body_block %}
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Add Table to Data Product</h3>       
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-sm-8 col-md-8">
+
+        <form method="post">
+            {% csrf_token %}
+            <div id='form_product_observational'>
+                {{ form_product_observational.as_p }}
+            </div>
+            <input type="submit" value="Submit" class="btn btn-default"/>
+        </form>
+    </div>
+    <!--/.Column-->
+    <!--Column-->
+    <div class="help col-sm-4 col-md-4">
+        <div class="form_data">
+            Add Help Here. <br/><br/><br/>
+        </div>
+        {% if new_data_set %}
+        <hr/>
+        <div class="row">
+
+            <!--Card-->  <!-------------------------- NEEDS WORK----------------------------------->
+            <a href="{{ new_data_set.get_absolute_url }}">
+            <div class="card">
+                <!--Card image-->
+                <!-----------------------ADD IFS FOR IMAGES--------------------->
+                <img class="img-fluid" src="{% static 'images/calibrated.png' %}" alt="Data Image"/>
+                <!--Card content-->
+                <div class="card-body">
+                    <!--Title-->
+                    <h4 class="card-title">{{ new_data_set.name }}</h4>
+                    <!--Text-->
+                    <p class="card-text">{{ new_data_set.processing_level }}</p>
+                    <p class="card-text">{{ new_data_set.repetitions }}</p>
+
+                    <!--Buttons-->
+                    <a href="{% url 'main:construction' %}">
+                        <button type="button" class="btn btn-default">Go to {{ new_data_set.name }} page</button> 
+                    </a>
+                </div>
+            </div>
+            </a>
+            <!--/.Card-->  <!-------------------------- NEEDS WORK----------------------------------->
+
+        </div>
+        <!--/.Row-->
+        {% endif %}
+    </div>
+    <!--/.Column-->
+    
+</div>
+<!--/.Row-->
+<!--Divider-->
+<hr/>
+<!--/.Divider-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Current {{ product_observational.type_of }} Data added to {{ product_observational.title.title }}</h3>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Second row-->
+<!--Row-->
+<div class="row pt-2">
+{% if observational_set %}    
+    {% for observation in observational_set %}
+    <!--Column-->
+    <div class="col-sm-6 col-md-3">
+        <!--Card-->
+        <a href="{{ observation.get_absolute_url }}">
+        <div class="card">
+            <!--Card image-->
+            <!-----------------------ADD IFS FOR IMAGES--------------------->
+            <img class="img-fluid" src="{% static 'images/calibrated.png' %}" alt="Data Image">
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">{{ observation.name }}</h4>
+                <!--Text-->
+                <p class="card-text">{{ observation.observational_type }}</p>
+                <p class="card-text">Structure: {{ observation.product_observational.structure }}</p>
+                <p class="card-text">Description: {{ observation.description }}</p>
+                <!--Buttons-->
+                <a href="{% url 'main:construction' %}">
+                    <button type="button" class="btn btn-danger">Remove</button> 
+                </a>
+            </div>
+        </div>
+        </a>
+        <!--/.Card-->
+    </div>
+    <!--/.Column-->
+    {% endfor %}
+{% else %}
+    <!--Column-->
+    <div class="col-sm-6 col-md-3">
+        <!--Card-->
+        <div class="card">
+            <!--Card image-->
+            <img class="img-fluid" src="{% static 'images/null.png' %}" alt="Instrument Image">
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">Null</h4>
+                <!--Text-->
+                <p class="card-text">No data is associated with {{ bundle }}.</p>
+            </div>
+        </div>
+        <!--/.Card-->
+    </div>
+    <!--/.Column-->
+{% endif %}
+</div>
+<!--/.Row-->
+<hr/>
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <a href="{{ bundle.absolute_url }}">
+        <button type="button" class="btn btn-default">
+            <i class="fa fa-arrow-circle-left"></i>
+            Back to {{ bundle }}'s Bundle Detail
+        </button>
+        </a>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+<hr/>
+{% endblock %}

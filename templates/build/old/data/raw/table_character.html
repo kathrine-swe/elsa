@@ -1,0 +1,109 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+
+{% block title_block %}
+Data Raw
+{% endblock %}
+
+{% block main_header_block %}
+Data Raw Collection - Table Character
+{% endblock %}
+
+{% block about_header_block %}
+Table character information goes here.  For now, enjoy this filler text.  Isn't it lovely?
+{% endblock %}
+
+{% block body_block %}
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Table Character Label</h3><br/>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div id='form_data_structure'>
+            {{ form_table_character.as_p }}
+            </div>
+            <input type="submit" value="Submit" class="btn btn-default"/>
+        </form>
+    </div>
+    <!--/.Column-->
+    <!--Column-->
+    <div class="col-md-6">
+        <div class="help">
+        </div>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Row-->
+
+
+<!--Divider-->
+<hr/>
+<!--/.Divider-->
+<!--Row-->
+<div class="row pt-2">
+    <!--Column-->
+    <div class="col-md-12">
+        <h3 class="card-header elegant-color white-text text-center z-depth-2">Current Data Products</h3>
+    </div>
+    <!--/.Column-->
+</div>
+<!--/.Second row-->
+<!--Row-->
+<div class="row pt-2">
+{% if raw_set %}    
+    {% for data in raw_set %}
+    <!--Column-->
+    <div class="col-md-3">
+        <!--Card-->
+        <div class="card">
+            <!--Card image-->
+            <img class="img-fluid" src="{% static 'images/data.ico' %}" alt="Data Image">
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">{{ data.title }}</h4>
+                <!--Text-->
+                <p class="card-text">{{ data.name }}</p>
+                <!--Buttons-->
+                <a href="{% url 'main:construction' %}">
+                    <button type="button" class="btn btn-danger">Remove</button> 
+                </a>
+            </div>
+        </div>
+        <!--/.Card-->
+    </div>
+    <!--/.Column-->
+    {% endfor %}
+{% else %}
+    <!--Column-->
+    <div class="col-md-3">
+        <!--Card-->
+        <div class="card">
+            <!--Card image-->
+            <img class="img-fluid" src="{% static 'images/null.png' %}" alt="Instrument Image">
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">Null</h4>
+                <!--Text-->
+                <p class="card-text">No data is associated with {{ bundle }}.</p>
+            </div>
+        </div>
+        <!--/.Card-->
+    </div>
+    <!--/.Column-->
+{% endif %}
+</div>
+<!--/.Third row-->
+
+{% endblock %}
