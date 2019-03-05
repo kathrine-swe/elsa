@@ -10,7 +10,15 @@ ELSA Context Repository
 {% endblock %}
 
 {% block body_block %}
+<table>
+    <tr><a href="{% url 'main:construction' %}">
+        <button class="btn btn-indigo mb-3">Investigations</button></a></tr>
+    <tr><a href="{% url 'main:construction' %}">
+        <button class="btn btn-indigo mb-3">Instrument Hosts</button></tr>
+    <tr><a href="{% url 'main:construction' %}">
+        <button class="btn btn-indigo mb-3">Instruments</button></tr>
+    <tr><a href="{% url 'main:construction' %}">
+        <button class="btn btn-indigo mb-3">Targets</button></tr>
 
-
-
+</table>
 {% endblock %}

@@ -57,6 +57,7 @@ class AliasForm(forms.ModelForm):
 """
 class BundleForm(forms.ModelForm):
     name = forms.CharField( initial='Enter name here', required=True, max_length=50) 
+    version = forms.CharField( initial='1A10')
 
     class Meta:
         model = Bundle              

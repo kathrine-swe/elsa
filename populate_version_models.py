@@ -2,6 +2,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'elsa.settings')
 
 import django
+import time
 django.setup()
 
 from build.models import Version
@@ -107,8 +108,10 @@ def add_version(num, xml_model, xmlns, xsi, schemaLocation, schematypens):
 if __name__ == '__main__':
     print("\nSTARTING ELSA POPULATION SCRIPT -- VERSION MODELS.")
     print("@PieceOfKayk. July 2018")
+    s1 = time.time()
     populate()
-    print("Population successful.\n")
+    s2 = time.time()
+    print("Population successful.\nTime elapsed: ", (s2 - s1) )
 
     version_set = Version.objects.all()
     print 'The current version models in ELSA are:'

@@ -25,7 +25,12 @@ PDS4_LABEL_TEMPLATE_DIRECTORY = os.path.join(settings.TEMPLATE_DIR, 'pds4_labels
 
 
 
-
+# Notes about models before you get started:
+# 
+#    When an object has a name, the name is in the format specified in the lid, not the title.
+#    It is important to keep it this way because that is how it is used in the urls on starbase
+#    minus a little formatting for vids.
+#
 
 
 # Create your models here.
@@ -58,19 +63,30 @@ Inherited Association	none
 Referenced from	Context_Area	 	 	 
         	Observation_Area	 	 	 
 """
+class InvestigationManager(models.Manager):
+    def create_investigation(self, name, type_of, lid, vid, internal_references, starbase_label):
+        investigation = self.create(name=name, type_of=type_of, lid=lid, vid=vid, internal_references=internal_references, starbase_label=starbase_label)
+        return investigation
+
+
 class Investigation(models.Model):
     INVESTIGATION_TYPES = [
         ('individual','individual'),
         ('mission','mission'),
-        ('observing_campaign','observingcampaign'),
+        ('observing_campaign','observing_campaign'),
         ('other_investigation','other_investigation'),
     ]
+
+    # Attributes used for crawler
     name = models.CharField(max_length=MAX_CHAR_FIELD)
     type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=INVESTIGATION_TYPES)
-    version = models.PositiveIntegerField(default=0)
-    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
+    vid = models.FloatField(default=1.0)
+    internal_references = []
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)    
 
-
+    # Attributes used to manage Investigation object
+    objects = InvestigationManager()
 
 
 
@@ -113,13 +129,17 @@ class Facility(models.Model):
         ('Observatory','Observatory'),
     ]
 
-    address = models.CharField(max_length=MAX_CHAR_FIELD)
-    country = models.CharField(max_length=MAX_CHAR_FIELD)
-    description = models.CharField(max_length=MAX_TEXT_FIELD) # Use a widget in forms if need be 
+    # Relational attribute
     investigation = models.ManyToManyField(Investigation)
+
+    # Characteristic attributes
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
     name = models.CharField(max_length=MAX_CHAR_FIELD)
-    logical_identifier = models.CharField(max_length=MAX_CHAR_FIELD)
     type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=FACILITY_TYPES) 
+    version = models.FloatField(default=1.0)
+
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
 
     # Accessors
     def name_lid_case(self):
@@ -131,57 +151,6 @@ class Facility(models.Model):
     # Meta
     def __str__(self):
         return self.name
-
-
-
-
-
-
-
-
-"""
-10.25  Mission_Area
-
-Root Class:Product_Components
-Role:Concrete
-
-Class Description:The mission area allows the insertion of mission specific metadata.
-
-Steward:pds
-Namespace Id:pds
-Version Id:1.0.0.0
-  	Entity 	Card 	Value/Class 	Ind
-
-Hierarchy	Product_Components	 	 	 
-        	. Mission_Area	 	 	 
-Subclass        	none	 	 	 
-Attribute	        none	 	 	 
-Inherited Attribute	none	 	 	 
-Association	        none	 	 	 
-Inherited Association	none	 	 	 
-Referenced from	Context_Area	 	 	 
-         	Observation_Area	 	 	 
-"""
-@python_2_unicode_compatible
-class Mission(models.Model):
-    investigation = models.ManyToManyField(Investigation)
-    name = models.CharField(max_length=MAX_CHAR_FIELD)
-
-    # Accessors
-    def name_lid_case(self):
-        # Convert name to lower case
-        name_edit = self.name.lower()
-        # Convert spaces to underscores
-        name_edit = replace_all(name_edit, ' ', '_')
-        
-
-    # Meta
-    def __str__(self):
-        return self.name
-
-
-
-
 
 
 
@@ -222,19 +191,25 @@ Inherited Association	none
 Referenced from	Product_Context	 	 	 
 """
 @python_2_unicode_compatible
-class InstrumentHost(models.Model):
+class Instrument_Host(models.Model):
     INSTRUMENT_HOST_TYPES = [
         ('Earth Based','Earth Based'),
         ('Lander', 'Lander'),
         ('Rover', 'Rover'),
         ('Spacecraft','Spacecraft'),
+        ('unk','unk'), # This is only for a fix in Starbase and should be deleted once fixed
     ]
-    description = models.CharField(max_length=MAX_TEXT_FIELD)
-    mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
+
+    # Relational Attributes
+    investigation = models.ManyToManyField(Investigation)
+
+    # Attributes used for crawler
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
     name = models.CharField(max_length=MAX_CHAR_FIELD)
-    naif_host_id = models.CharField(max_length=MAX_CHAR_FIELD)
-    serial_number = models.CharField(max_length=MAX_CHAR_FIELD)
     type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=INSTRUMENT_HOST_TYPES)
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
+
 
     # Meta
     def __str__(self):
@@ -409,15 +384,16 @@ class Instrument(models.Model):
         ('X-ray Diffraction Spectrometer','X-ray Diffraction Spectrometer'),
         ('X-ray Fluorescence Spectrometer','X-ray Fluorescence Spectrometer'),
     ]
-    description = models.CharField(max_length=MAX_TEXT_FIELD)
-    facility = models.ForeignKey(Facility, on_delete=models.CASCADE)  # This might be incorrect.
-    instrument_host = models.ForeignKey(InstrumentHost)
-    model_id = models.CharField(max_length=MAX_CHAR_FIELD)
-    naif_instrument_id = models.CharField(max_length=MAX_CHAR_FIELD)
+    # Relational Attributes
+    #investigation = models.ManyToManyField(Investigation)
+    instrument_host = models.ManyToManyField(Instrument_Host)
+
+    # Attributes used for crawler
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
     name = models.CharField(max_length=MAX_CHAR_FIELD)
-    serial_number = models.CharField(max_length=MAX_CHAR_FIELD)
-    subtype = models.CharField(max_length=MAX_CHAR_FIELD)
     type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=INSTRUMENT_TYPES)
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
 
     # Meta
     def __str__(self):
@@ -516,11 +492,17 @@ class Target(models.Model):
         ('Terrestrial Sample','Terrestrial Sample'),
         ('Trans-Neptunian Object','Trans-Neptunian Object'),
     ]
-    description = models.CharField(max_length=MAX_CHAR_FIELD)
-    facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
-    mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
+    # Relational Attributes
+    #investigation = models.ManyToManyField(Investigation)
+    instrument_host = models.ManyToManyField(Instrument_Host)
+
+    # Attributes used for crawler
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
     name = models.CharField(max_length=MAX_CHAR_FIELD)
     type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=TARGET_TYPES)
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
+
 
     # Meta
     def __str__(self):

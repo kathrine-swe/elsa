@@ -204,6 +204,8 @@ class Bundle(models.Model):
     status = models.CharField(max_length=1, choices=BUNDLE_STATUS, blank=False, default='b')     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     version = models.ForeignKey(Version, on_delete=models.CASCADE)
+    # To implement where the default is the most current version, we first need to grab all versions
+    # and then grab the one with the highest number.
 
 
     def __str__(self):
