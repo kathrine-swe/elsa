@@ -57,6 +57,7 @@ class AliasForm(forms.ModelForm):
 """
 class BundleForm(forms.ModelForm):
     name = forms.CharField( initial='Enter name here', required=True, max_length=50) 
+    version = forms.CharField( initial='1A10')
 
     class Meta:
         model = Bundle              
@@ -160,105 +161,6 @@ class DataForm(forms.ModelForm):
     class Meta:
         model = Data
         exclude = ('bundle', 'collection')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-    Instrument_Host
-"""
-class InstrumentHostForm(forms.ModelForm):
-    class Meta:
-        model = InstrumentHost
-        exclude = ('',)
-
-
-
-
-
-
-
-
-
-
-
-"""
-    Instrument
-"""
-class InstrumentForm(forms.ModelForm):
-    class Meta:
-        model = Instrument
-        exclude = ('',)
-
-
-
-
-
-
-
-
-
-
-
-"""
-    Mission
-"""
-class MissionForm(forms.ModelForm):
-    class Meta:
-        model = Mission
-        exclude = ('',)
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-    Target
-"""
-class TargetForm(forms.ModelForm):
-    class Meta:
-        model = Target
-        exclude = ('',)
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-    Facility
-"""
-class Facility(forms.ModelForm):
-    class Meta:
-        model = Facility
-        exclude = ('',)
-
-
 
 
 
