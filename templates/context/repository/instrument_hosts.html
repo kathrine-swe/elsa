@@ -1,0 +1,21 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+<link rel="stylesheet" href="{ % static 'js/context.js' % }">
+
+{% block title_block %}
+ELSA Context Repository - Instrument Hosts
+{% endblock %}
+
+{% block main_header_block %}
+ELSA Context Repository - Instrument Hosts
+{% endblock %}
+
+{% block body_block %}
+<table>
+    {% for instrument_host in instrument_hosts %}
+    <tr><a href="{% url 'main:construction' %}">
+        <button class="btn btn-indigo mb-3">{{ instrument_host.name }}<br/>{{ instrument_host.lid }}</button></a></tr>
+    {% endfor %}
+
+</table>
+{% endblock %}

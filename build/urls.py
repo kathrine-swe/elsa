@@ -30,6 +30,12 @@ urlpatterns = [
 
 
     # Context
+    url(r'^(?P<pk_bundle>\d+)/contextsearch/$', views.context_search, name='context_search'),
+    url(r'^(?P<pk_bundle>\d+)/contextsearch/investigation/$', views.context_search_investigation, name='context_search_investigation'),
+    url(r'^(?P<pk_bundle>\d+)/contextsearch/investigation/(?P<pk_investigation>\d+)/instrument_host/$', views.context_search_instrument_host, name='context_search_instrument_host'),
+    #url(r'^(?P<pk_bundle>\d+)/contextsearch/mission/(?P<pk_instrument_host>\d+)/$', views.instrument_host_detail, name='instrument_host_detail'),
+    #url(r'^(?P<pk_bundle>\d+)/contextsearch/mission/(?P<pk_instrument_host>\d+)/instrument/(?P<pk_instrument>\d+)/confirm_delete/$', views.instrument_delete, name='instrument_delete'),
+    #url(r'^(?P<pk_bundle>\d+)/contextsearch/facility/$', views.context_search_facility, name='context_search_facility'),
 
 
     # Data

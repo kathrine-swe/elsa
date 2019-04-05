@@ -6,7 +6,7 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 
@@ -496,6 +496,134 @@ def citation_information(request, pk_bundle):
         # Update context_dict with the current Citation_Information models associated with the user's bundle
         context_dict['citation_information_set'] = Citation_Information.objects.filter(bundle=bundle)
         return render(request, 'build/citation_information/citation_information.html',context_dict)
+
+    # Secure: Current user is not the user associated with the bundle, so...
+    else:
+        print 'unauthorized user attempting to access a restricted area.'
+        return redirect('main:restricted_access')
+
+
+
+
+
+
+
+
+
+
+
+
+def context_search(request, pk_bundle):
+    print '\n\n'
+    print '-------------------------------------------------------------------------'
+    print '\n\n------------------- Context Search with ELSA ------------------------'
+    print '------------------------------ DEBUGGER ---------------------------------'
+
+    # Get bundle and collections
+    bundle = Bundle.objects.get(pk=pk_bundle)
+    collections = Collections.objects.get(bundle=bundle)
+
+    # Secure ELSA by seeing if the user logged in is the same user associated with the Bundle
+    if request.user == bundle.user:
+        print 'authorized user: {}'.format(request.user)
+
+        # Context Dictionary
+        context_dict = {
+            'bundle':bundle,            
+            'instrument_list':[],
+            'target_list':[],
+        }
+
+        return render(request, 'build/context/context_search.html', context_dict)
+
+    # Secure: Current user is not the user associated with the bundle, so...
+    else:
+        print 'unauthorized user attempting to access a restricted area.'
+        return redirect('main:restricted_access')
+
+
+
+
+
+
+
+
+
+
+
+def context_search_investigation(request, pk_bundle):
+    print '\n\n'
+    print '-------------------------------------------------------------------------'
+    print '\n\n--------------- Add Context: Investigation with ELSA ----------------'
+    print '------------------------------ DEBUGGER ---------------------------------'
+
+    # Get bundle and collections
+    bundle = Bundle.objects.get(pk=pk_bundle)
+
+    # Secure ELSA by seeing if the user logged in is the same user associated with the Bundle
+    if request.user == bundle.user:
+        print 'authorized user: {}'.format(request.user)
+
+        # Get form for observing system component
+        form_investigation = InvestigationForm(request.POST or None)
+
+        # Context Dictionary
+        context_dict = {
+            'bundle':bundle,
+            'form_investigation':form_investigation,
+            'instrument_list':[],
+            'target_list':[],
+        }
+
+
+        if request.method == 'POST':
+            if form_investigation.is_valid():
+                i = Investigation.objects.get(name=form_investigation.cleaned_data['investigation'])
+                context_dict['investigation'] = i
+
+
+        return render(request, 'build/context/context_search_investigation.html', context_dict)
+
+    # Secure: Current user is not the user associated with the bundle, so...
+    else:
+        print 'unauthorized user attempting to access a restricted area.'
+        return redirect('main:restricted_access')
+
+
+
+
+
+
+
+
+
+
+
+def context_search_instrument_host(request, pk_bundle, pk_investigation):
+    print '\n\n'
+    print '-------------------------------------------------------------------------'
+    print '\n\n-------------- Add Context: Instrument Host with ELSA ---------------'
+    print '------------------------------ DEBUGGER ---------------------------------'
+
+    # Get bundle and collections
+    bundle = Bundle.objects.get(pk=pk_bundle)
+
+    # Secure ELSA by seeing if the user logged in is the same user associated with the Bundle
+    if request.user == bundle.user:
+        print 'authorized user: {}'.format(request.user)
+
+        # Get form for observing system component
+        form_instrument_host = InstrumentHostForm(request.POST or None, pk_inv=pk_investigation)
+
+        # Context Dictionary
+        context_dict = {
+            'bundle':bundle,
+            'form_instrument_host':form_instrument_host,
+            'instrument_list':[],
+            'target_list':[],
+        }
+
+        return render(request, 'build/context/context_search_instrument_host.html', context_dict)
 
     # Secure: Current user is not the user associated with the bundle, so...
     else:

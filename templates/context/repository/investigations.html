@@ -1,0 +1,21 @@
+{% extends 'main/base-k.html' %}
+{% load static %}
+<link rel="stylesheet" href="{ % static 'js/context.js' % }">
+
+{% block title_block %}
+ELSA Context Repository - Investigations
+{% endblock %}
+
+{% block main_header_block %}
+ELSA Context Repository - Investigations
+{% endblock %}
+
+{% block body_block %}
+<table>
+    {% for investigation in investigations %}
+    <tr><a href="{% url 'main:construction' %}">
+        <button class="btn btn-indigo mb-3">{{ investigation.name }}<br/>{{ investigation.lid }}</button></a></tr>
+    {% endfor %}
+
+</table>
+{% endblock %}
