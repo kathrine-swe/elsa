@@ -64,9 +64,11 @@ Referenced from	Context_Area
         	Observation_Area	 	 	 
 """
 class InvestigationManager(models.Manager):
-    def create_investigation(self, name, type_of, lid, vid, internal_references, starbase_label):
-        investigation = self.create(name=name, type_of=type_of, lid=lid, vid=vid, internal_references=internal_references, starbase_label=starbase_label)
-        return investigation
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
 
 
 class Investigation(models.Model):
@@ -86,8 +88,16 @@ class Investigation(models.Model):
     starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)    
 
     # Attributes used to manage Investigation object
-    objects = InvestigationManager()
+    #objects = InvestigationManager()
 
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
+    def __str__(self):
+        return self.name
 
 
 
@@ -190,6 +200,13 @@ Inherited Association	none
 
 Referenced from	Product_Context	 	 	 
 """
+class Instrument_HostManager(models.Manager):
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
 @python_2_unicode_compatible
 class Instrument_Host(models.Model):
     INSTRUMENT_HOST_TYPES = [
@@ -210,11 +227,20 @@ class Instrument_Host(models.Model):
     vid = models.FloatField(default=1.0)
     starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
 
+    # Attributes used to manage Instrument Host object
+    #objects = Instrument_HostManager()
+
+
 
     # Meta
     def __str__(self):
         return self.name
 
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
 
 
 
@@ -316,6 +342,13 @@ Inherited Association	none
 
 Referenced from	Product_Context	 	 	 
 """
+class InstrumentManager(models.Manager):
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
 class Instrument(models.Model):
     INSTRUMENT_TYPES = [
         ('Accelerometer','Accelerometer'),
@@ -395,9 +428,18 @@ class Instrument(models.Model):
     vid = models.FloatField(default=1.0)
     starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
 
+    # Attributes used to manage Instrument Host object
+    #objects = InstrumentManager()
+
     # Meta
     def __str__(self):
         return self.name
+
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
 
 
 
@@ -457,6 +499,13 @@ Association	data_object	1	Physical_Object
 Inherited Association	none	 	 	 
 Referenced from	Product_Context	 	 	 
 """
+class TargetManager(models.Manager):
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
 @python_2_unicode_compatible
 class Target(models.Model):
     TARGET_TYPES = [
@@ -503,10 +552,18 @@ class Target(models.Model):
     vid = models.FloatField(default=1.0)
     starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
 
+    # Attributes used to manage Instrument Host object
+    #objects = TargetManager()
 
     # Meta
     def __str__(self):
         return self.name
+
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
 
 
 

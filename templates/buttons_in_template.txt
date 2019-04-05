@@ -1,0 +1,185 @@
+build/alias/alias.html:71:                        <!--Buttons-->
+build/alias/alias.html:73:                            <button type="button" class="btn btn-danger">Delete</button> 
+build/alias/alias.html:110:        <button type="button" class="btn btn-default">
+build/alias/alias.html:113:        </button>
+build/citation_information/citation_information.html:87:                        <!--Buttons-->
+build/citation_information/citation_information.html:89:                            <button type="button" class="btn btn-danger">Delete</button>
+build/citation_information/citation_information.html:130:        <button type="button" class="btn btn-default">
+build/citation_information/citation_information.html:133:        </button>
+build/old/citation_information/add.html:76:                        <!--Buttons-->
+build/old/citation_information/add.html:78:                            <button type="button" class="btn btn-default">Delete</button>
+build/old/citation_information/add.html:119:        <button type="button" class="btn btn-default">
+build/old/citation_information/add.html:122:        </button>
+build/old/bundle/detail_january2018.html:47:                    <button type="button" class="btn btn-cyan">Download {{ bundle }} Bundle</button>
+build/old/bundle/detail_january2018.html:52:                    <button type="button" class="btn btn-teal">View {{ bundle }} Directory</button>
+build/old/bundle/detail_january2018.html:57:                    <button type="button" class="btn btn-warning">Delete {{ bundle }} Bundle</button>
+build/old/bundle/detail_january2018.html:80:        <div class="button">
+build/old/bundle/detail_january2018.html:105:            <div class="button">
+build/old/bundle/detail_january2018.html:130:            <div class="button">
+build/old/bundle/detail_january2018.html:187:            <div class="button">
+build/old/bundle/detail_january2018.html:213:            <div class="button">
+build/old/bundle/detail_january2018.html:238:            <div class="button">
+build/old/bundle/detail_january2018.html:265:            <div class="button">
+build/old/bundle/detail_january2018.html:293:            <div class="button">
+build/old/bundle/detail_january2018.html:320:            <div class="button">
+build/old/bundle/detail_january2018.html:348:            <div class="button">
+build/old/bundle/detail-before-december-2017.html:48:            <button type="button" class="btn btn-cyan">Download {{ bundle }} Bundle</button>
+build/old/bundle/detail-before-december-2017.html:51:            <button type="button" class="btn btn-teal">View {{ bundle }} Directory</button>
+build/old/bundle/detail-before-december-2017.html:55:            <button type="button" class="btn btn-warning">Delete {{ bundle }} Bundle</button>
+build/old/bundle/detail.html:47:                    <button type="button" class="btn btn-cyan">Download {{ bundle }} Bundle</button>
+build/old/bundle/detail.html:52:                    <button type="button" class="btn btn-teal">View {{ bundle }} Directory</button>
+build/old/bundle/detail.html:57:                    <button type="button" class="btn btn-warning">Delete {{ bundle }} Bundle</button>
+build/old/bundle/detail.html:80:        <div class="button">
+build/old/bundle/detail.html:105:            <div class="button">
+build/old/bundle/detail.html:130:            <div class="button">
+build/old/bundle/detail.html:157:            <div class="button">
+build/old/bundle/detail.html:197:            <div class="button">
+build/old/bundle/detail.html:224:            <div class="button">
+build/old/bundle/detail.html:252:            <div class="button">
+build/old/bundle/detail.html:279:            <div class="button">
+build/old/bundle/detail.html:307:            <div class="button">
+build/old/product_document/product_document_detail.html:29:        <a href="{% url 'main:construction' %}"><button type="button" class="btn btn-danger">Delete {{ document }} Label</button></a>
+build/old/product_document/editor.html:22:    This section is currently a work in progress.  Submit buttons are taken down until completion.
+build/old/product_document/editor.html:27:        <a href="{% url 'main:construction' %}"><button type="button" class="btn btn-danger">Delete {{ product_bundle }} Label</button></a>
+build/old/product_document/editor.html:64:        <a href="{% url 'build:bundle_detail' bundle.pk %}"><button type="button" class="btn btn-default">Back to Bundle</button></a>
+build/old/product_bundle/product_bundle_detail.html:20:    If people back to this, just give them nav buttons to go elsewhere maybe??
+build/old/product_bundle/product_bundle_detail.html:25:        <a href="{% url 'main:construction' %}"><button type="button" class="btn btn-default">Edit {{ product_bundle }} Label</button></a>
+build/old/product_bundle/editor.html:27:        <!--<a href="{% url 'main:construction' %}"><button type="button" class="btn btn-danger">Delete {{ product_bundle }} Label</button></a>-->
+build/old/product_bundle/editor.html:55:                        <!--Buttons-->
+build/old/product_bundle/editor.html:57:                            <button type="button" class="btn btn-default">Delete</button>
+build/old/product_bundle/editor.html:120:                        <!--Buttons-->
+build/old/product_bundle/editor.html:122:                            <button type="button" class="btn btn-default">Delete</button>
+build/old/product_bundle/editor.html:185:        <a href="{% url 'build:bundle_detail' bundle.pk %}"><button type="button" class="btn btn-default">Back to Bundle</button></a>
+build/old/alias/add.html:71:                        <!--Buttons-->
+build/old/alias/add.html:73:                            <button type="button" class="btn btn-danger">Delete</button> 
+build/old/alias/add.html:110:        <button type="button" class="btn btn-default">
+build/old/alias/add.html:113:        </button>
+build/old/data/reduced/table_character.html:77:                <!--Buttons-->
+build/old/data/reduced/table_character.html:79:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/reduced/index.html:102:                <!--Buttons-->
+build/old/data/reduced/index.html:104:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/calibrated/index.html:107:                <!--Buttons-->
+build/old/data/calibrated/index.html:109:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/calibrated/index.html:144:        <button type="button" class="btn btn-default">
+build/old/data/calibrated/index.html:147:        </button>
+build/old/data/calibrated/table_delimited.html:78:                <!--Buttons-->
+build/old/data/calibrated/table_delimited.html:80:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/calibrated/table_character.html:77:                <!--Buttons-->
+build/old/data/calibrated/table_character.html:79:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/add.html:113:        <button type="button" class="btn btn-default">
+build/old/data/add.html:116:        </button>
+build/old/data/index.html:65:                    <!--Buttons-->
+build/old/data/index.html:67:                        <button type="button" class="btn btn-default">Go to {{ new_data_set.name }} page</button> 
+build/old/data/index.html:114:                <!--Buttons-->
+build/old/data/index.html:116:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/derived/table_character.html:77:                <!--Buttons-->
+build/old/data/derived/table_character.html:79:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/derived/index.html:102:                <!--Buttons-->
+build/old/data/derived/index.html:104:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/raw/index.html:102:                <!--Buttons-->
+build/old/data/raw/index.html:104:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/data/raw/table_character.html:77:                <!--Buttons-->
+build/old/data/raw/table_character.html:79:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/context/query.html:38:            <button type="button" class="btn btn-default" id="facility">Facility</button>
+build/old/context/query.html:41:            <button type="button" class="btn btn-default" id="mission">Mission</button>
+build/old/context/query.html:84:                <!--Buttons-->
+build/old/context/query.html:86:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/context/query.html:127:                <!--Buttons-->
+build/old/context/query.html:129:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/context/facility/facility.html:86:                <!--Buttons-->
+build/old/context/facility/facility.html:88:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/context/facility/facility.html:123:        <button type="button" class="btn btn-default">
+build/old/context/facility/facility.html:126:        </button>
+build/old/context/search/instrument_host.html:35:            <button type="button" class="btn btn-default">{{ host }}</button>
+build/old/context/search/instrument_host_detail.html:75:                <!--Buttons-->
+build/old/context/search/instrument_host_detail.html:77:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/context/search/instrument_host_detail.html:131:                <!--Buttons-->
+build/old/context/search/instrument_host_detail.html:133:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/old/context/search/instrument_host_detail.html:167:        <button type="button" class="btn btn-default">
+build/old/context/search/instrument_host_detail.html:170:        </button>
+build/old/product_collection/product_collection_detail.html:20:    If people back to this, just give them nav buttons to go elsewhere maybe??
+build/old/product_collection/product_collection_detail.html:25:        <a href="{% url 'elsa:construction' %}"><button type="button" class="btn btn-default">Edit {{ product_collection }} Label</button></a>
+build/old/product_collection/editor.html:27:        <!--<a href="{% url 'elsa:construction' %}"><button type="button" class="btn btn-danger">Delete {{ product_bundle }} Label</button></a>-->
+build/old/product_collection/editor.html:101:        <a href="{% url 'build_a_bundle:bundle_detail' bundle.pk %}"><button type="button" class="btn btn-default">Back to Bundle</button></a>
+build/old/document/add.html:78:                        <!--Buttons-->
+build/old/document/add.html:80:                            <button type="button" class="btn btn-default">View</button>
+build/old/document/add.html:83:                            <button type="button" class="btn btn-success">Edit</button>
+build/old/document/add.html:120:        <button type="button" class="btn btn-default">
+build/old/document/add.html:123:        </button>
+build/old/document/edit.html:65:                <button class="btn btn-default">Add Document Edition</button>
+build/old/document/edit.html:101:                        <!--Buttons-->
+build/old/document/edit.html:103:                            <button type="button" class="btn btn-default">View</button>
+build/old/document/edit.html:106:                            <button type="button" class="btn btn-success">Edit</button>
+build/old/document/edit.html:143:        <button type="button" class="btn btn-default">
+build/old/document/edit.html:146:        </button>
+build/document/document.html:78:                        <!--Buttons-->
+build/document/document.html:80:                            <button type="button" class="btn btn-default">View</button>
+build/document/document.html:83:                            <button type="button" class="btn btn-success">Edit</button>
+build/document/document.html:120:        <button type="button" class="btn btn-default">
+build/document/document.html:123:        </button>
+build/document/edit.html:65:                <button class="btn btn-default">Add Document Edition</button>
+build/document/edit.html:101:                        <!--Buttons-->
+build/document/edit.html:103:                            <button type="button" class="btn btn-default">View</button>
+build/document/edit.html:106:                            <button type="button" class="btn btn-success">Edit</button>
+build/document/edit.html:143:        <button type="button" class="btn btn-default">
+build/document/edit.html:146:        </button>
+build/document/product_document.html:61:        <button type="button" class="btn btn-default">
+build/document/product_document.html:64:        </button>
+build/bundle/bundle.html:97:                    <button type="button" class="btn btn-cyan">Download {{ bundle }} Bundle</button>
+build/bundle/bundle.html:102:                    <button type="button" class="btn btn-teal">View {{ bundle }} Directory</button>
+build/bundle/bundle.html:107:                    <button type="button" class="btn btn-warning">Delete {{ bundle }} Bundle</button>
+build/bundle/bundle.html:130:        <div class="button">
+build/bundle/bundle.html:155:            <div class="button">
+build/bundle/bundle.html:180:            <div class="button">
+build/bundle/bundle.html:207:            <div class="button">
+build/bundle/bundle.html:247:            <div class="button">
+build/bundle/bundle.html:274:            <div class="button">
+build/bundle/bundle.html:302:            <div class="button">
+build/bundle/bundle.html:329:            <div class="button">
+build/bundle/bundle.html:357:            <div class="button">
+build/data/data.html:64:                    <!--Buttons-->
+build/data/data.html:66:                        <button type="button" class="btn btn-default">Go to {{ new_data_set.name }} page</button> 
+build/data/data.html:122:                <!--Buttons-->
+build/data/data.html:124:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/data/data.html:160:        <button type="button" class="btn btn-default">
+build/data/data.html:163:        </button>
+build/data/table.html:67:                    <!--Buttons-->
+build/data/table.html:69:                        <button type="button" class="btn btn-default">Go to {{ new_data_set.name }} page</button> 
+build/data/table.html:116:                <!--Buttons-->
+build/data/table.html:118:                    <button type="button" class="btn btn-danger">Remove</button> 
+build/data/table.html:154:        <button type="button" class="btn btn-default">
+build/data/table.html:157:        </button>
+review/index.html:46:                        <button type="submit" class="btn btn-primary">Submit</button>
+test/test.html:20:        <button type="button" class="btn btn-danger">Click this if you dare</button>
+main/contact_old.html:84:                                                    <button type="submit" class="btn btn-default"/>Submit</button>
+main/contact_old.html:128:                        <a href="#" class="btn btn-primary">Button</a>
+main/contact_old.html:153:                        <a href="#" class="btn btn-primary">Button</a>
+main/contact_old.html:178:                        <a href="#" class="btn btn-primary">Button</a>
+main/construction.html:28:        To get back to your prior location, press the back button on your browser now.
+main/contact.html:156:                        <button type="submit" class="btn btn-default">Submit</button>
+main/index.html:108:                      <center><button class="btn btn-default">
+main/index.html:110:                      </button></center>
+main/base-k.html:41:            <!-- Collapse button -->
+main/base-k.html:42:            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+main/base-k.html:43:        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+main/simple_upload.html:30:            <button type="submit">Upload</button>
+base-k-se.html:43:            <!-- Collapse button -->
+base-k-se.html:44:            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+base-k-se.html:45:        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+tutorial/introduction_build.html:28:        <a href="{% url 'tutorial:bundle_and_collections' %}"><button type="button" class="btn btn-default">Begin Tutorial</button></a>        
+tutorial/two.html:17:        <h4>First ELSA needs to know whether your bundle requires facility information or instrument and target information.  Please click the appropriate button below.</h4>
+tutorial/two.html:28:            <button type="button" class="btn btn-default" id="facility">Facility</button>
+tutorial/two.html:31:            <button type="button" class="btn btn-default" id="mission">Mission</button>
+tutorial/two.html:68:                <!--Buttons-->
+tutorial/two.html:70:                    <button type="button" class="btn btn-danger">Remove</button> 
+tutorial/two.html:126:                <!--Buttons-->
+tutorial/two.html:128:                    <button type="button" class="btn btn-danger">Remove</button> 
+blog/carousel-k.html:34:            <!-- Collapse button -->
+blog/carousel-k.html:35:            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+blog/carousel-k.html:36:        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+blog/carousel-k.html:146:    <a class="carousel-control-prev" href="#carousel-example-3" role="button" data-slide="prev">
+blog/carousel-k.html:150:    <a class="carousel-control-next" href="#carousel-example-3" role="button" data-slide="next">
+blog/base.html:30:      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+blog/base.html:32:      </button>
+blog/detail.html:24:    <button class="btn btn-default">Archive</button>
+blog/archive.html:70:                        <button class="btn btn-default">Add A Post {# enter an add post form #}.</button>

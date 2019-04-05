@@ -7,6 +7,7 @@ import urllib2, urllib
 import datetime
 
 from .models import *
+from context.models import *
 # ------------------------------------------------------------------------------------------------------ #
 # ------------------------------------------------------------------------------------------------------ #
 #
@@ -57,7 +58,7 @@ class AliasForm(forms.ModelForm):
 """
 class BundleForm(forms.ModelForm):
     name = forms.CharField( initial='Enter name here', required=True, max_length=50) 
-    version = forms.CharField( initial='1A10')
+    version = forms.ModelChoiceField(queryset=Version.objects.all(), required=True, help_text="Version")
 
     class Meta:
         model = Bundle              
@@ -171,6 +172,19 @@ class DataForm(forms.ModelForm):
 
 
 
+
+"""
+    Investigation
+"""
+class InvestigationForm(forms.Form):
+    investigation = forms.ModelChoiceField(queryset=Investigation.objects.all(), required=True, help_text="Note: Investigations can be individual, missions, observing campaigns, or other</br>")
+
+class InstrumentHostForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        self.pk_inv = kwargs.pop('pk_inv')
+        super(InstumentHostForm,self).__init__(*args, **kwargs)
+        self.fields['instrument_host'].widget = forms.ModelChoiceField(queryset=Instrument_Host.objects.filter(investigation=pk_inv), required=True)
 
 
 """
