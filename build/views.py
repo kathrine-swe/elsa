@@ -573,6 +573,7 @@ def context_search_investigation(request, pk_bundle):
             'form_investigation':form_investigation,
             'instrument_list':[],
             'target_list':[],
+            'bundle_investigation_set': bundle.investigations.all(),
         }
 
 
@@ -580,6 +581,7 @@ def context_search_investigation(request, pk_bundle):
             if form_investigation.is_valid():
                 i = Investigation.objects.get(name=form_investigation.cleaned_data['investigation'])
                 context_dict['investigation'] = i
+                bundle.investigations.add(i)
 
 
         return render(request, 'build/context/context_search_investigation.html', context_dict)

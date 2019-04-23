@@ -160,11 +160,19 @@ def get_internal_references(product_dict, source_product, target_product):
             # Search objects to get the object related to the internal_reference
             # of type target_product given its lid
             ir_obj = get_lid_to_object_queryset(target_product, internal_ref[0])
-            matched_refs.append(ir_obj)
+            if ir_obj is not None:
+                matched_refs.append(ir_obj)
 
     # Return all the internal references that matched the given source product to target 
     # product relations
     return matched_refs
+
+
+def get_or_none_lid(model, l):
+    try:
+        return model.objects.get(lid=l)
+    except model.DoesNotExist:
+        return None
 
 
 # Finds the associated object of type product_type given the product's lid
@@ -186,7 +194,13 @@ def get_lid_to_object_queryset(product_type, lid):
         else:
             return product[0]
     elif product_type == 'instrument_host':
-        return Instrument_Host.objects.get(lid=lid)
+        return get_or_none_lid(Instrument_Host, lid)
+    elif product_type == 'instrument':
+        return get_or_none_lid(Instrument, lid)
+    elif product_type == 'target':
+        return get_or_none_lid(Target, lid)
+    else:
+        print "Lid to object queryset error: Uknown object"
     
 # Constructs the Starbase url for a product of a given name and type
 def get_starbase_url(product_type, product_name):
@@ -294,12 +308,11 @@ def instrument_host_crawl():
         j[0].save()
         created.append(j[0])
     if j[0] == False:
-        print "\n\nUMMMM"
-
-
-
+        print "\n\nUMMMM.. Never want to see this"
 
     # INSTRUMENT_HOST CRAWL
+    #     1. Create Instrument Host object
+    #     2. Relate Instruments and Targets to Instrument Host
 
 
     # grab the whole list of instrument hosts from Starbase
@@ -358,19 +371,45 @@ def instrument_host_crawl():
         # if the object was created, then it is the first product of its name
         # and instrument host type so we want to do a few things:
         #     1. Get the investigation that the instrument host is related to
-        #        
-        #     2. Save and append object to our created list so we can
+        #     2. Get the instruments that the instrument host is related to
+        #     3. Get the targets that the isntrument host is related to   
+        #     4. Save and append object to our created list so we can
         #        print what was created later for our own sanity
  
         else:
+
             # Get investigation object(s)
             investigation_set = get_internal_references(product_dict, 'instrument_host', 'investigation')
             # Add investigation object(s) relation to instrument host object
             if len(investigation_set) == 0:
-                print "No investigations found"
+                print "No investigations found for instrument host"
             else:
                 for inv in investigation_set:
-                    i[0].investigation.add(inv)
+                    i[0].investigations.add(inv)
+
+
+            # Get instrument object(s)
+            instrument_set = get_internal_references(product_dict, 'instrument_host', 'instrument')
+
+            # Add instrument object(s) relation to instrument host object
+            if len(instrument_set) == 0:
+                print "No instruments found for instrument host"
+            else:
+                for ins in instrument_set:
+                    i[0].instruments.add(ins)
+
+
+            # Get target object(s)
+            target_set = get_internal_references(product_dict, 'instrument_host', 'target')
+
+            # Add target object(s) relation to instrument host object
+            if len(target_set) == 0:
+                print "No targets found for instrument host"
+            else:
+                for tar in target_set:
+                    i[0].targets.add(tar)
+
+            # Save and append instrument host object
             i[0].vid = product_dict['vid']
             i[0].lid = product_dict['lid']
             i[0].starbase_label = instrument_host_url
@@ -436,24 +475,12 @@ def instrument_crawl():
 
 
         # if the object was created, then it is the first product of its name
-        # and investigation type so we want to do a few things:
-        #     1. Get the investigation that the instrument host is related to
-        #        
-        #     2. Save and append object to our created list so we can
+        # and investigation type so we want to:
+        #     1. Save and append object to our created list so we can
         #        print what was created later for our own sanity
  
         else:
-            # Get investigation object(s)
-            #investigation_set = get_internal_references(product_dict, 'instrument', 'investigation')
-            # Get instrument host object(s)
-            instrument_host_set = get_internal_references(product_dict, 'instrument', 'instrument_host')
-
-            # Add investigation object(s) relation to instrument host object
-            if len(instrument_host_set) == 0:
-                print "No investigations found"
-            else:
-                for ins_host in instrument_host_set:
-                    i[0].instrument_host.add(ins_host)
+            # Save and append instrument object
             i[0].vid = product_dict['vid']
             i[0].lid = product_dict['lid']
             i[0].starbase_label = instrument_url
@@ -527,13 +554,9 @@ def target_crawl():
         # and target type so we want to do a few things:
         #     1. Save and append object to our created list so we can
         #        print what was created later for our own sanity
-        #     Note: Target products do not contain associated internal references
-        #        To add this, we must do an additional sweep through the internal
-        #        reference type we would like after all targets have been created.
-        #        We could do this on investigation, instrument host, or instrument.
-        #        I chose to do this on instrument host.
  
         else:
+            # Save and append target object
             t[0].vid = product_dict['vid']
             t[0].lid = product_dict['lid']
             t[0].starbase_label = target_url
@@ -541,60 +564,203 @@ def target_crawl():
             created.append(t[0])
             print "New elt t: ", t[0].vid, t[0].lid
 
-    # ADD INSTRUMENT HOSTS TO TARGETS CRAWL
-    # grab the whole list of instrument hosts from Starbase
-    instrument_hosts = get_product_list('instrument_host')
 
-    # for each investigation, we want to create an Instrument_Host object in ELSA's database
-    for instrument_host in instrument_hosts:
-        print "\n\nInstrument Host: ", instrument_host
-
-        # we need the url where the label exists
-        instrument_host_url = get_starbase_url('instrument_host', instrument_host)
-        print "URL: ", instrument_host_url
-
-        # we want our crawler to grab specified information from the labels
-        # these details about the investigation will be used to fill the
-        # ELSA database
-        #
-        #   definition:
-        #     instrument_detail = [type_of, name, (sometimes another name), version, file extension]
-        #
-        instrument_host_detail = get_product_detail(instrument_host)
-        print "Instrument Host Detail: ", instrument_host_detail
-
-        # Get product dictionary
-        product_dict = get_product_dict(instrument_host_url)
-
-        #
-        #  get_or_create returns a 2-tuple containing the object and a boolean indicating whether
-        #  or not the object was created.
-        #    i = ( object, created )
-        i = Instrument_Host.objects.get(
-                name=instrument_host_detail[1], 
-                type_of=instrument_host_detail[0], 
-            )
-        print i
-        
-        # Get product dictionary by crawling the instrument host label on Starbase
-        #product_dict = get_product_dict(instrument_host_url)
-
-        # Get instrument host object(s)
-        target_set = get_internal_references(product_dict, 'instrument_host', 'target')
-
-        # Add instrument host object(s) relation to target object
-        if len(target_set) == 0:
-            print "No targets found"
-        else:
-            for t in target_set:
-                    
-                    t.instrument_host.add(instrument_host)
 
 
 
            
 
 
+def facility_crawl():
+
+    # STARBASE FIXES
+
+
+    # FACILITY CRAWL
+    #     1. Create Facility object
+    #     2. Relate Instruments to Facility
+
+
+    # grab the whole list of facilities from Starbase
+    facilities = get_product_list('facility')
+
+    # for each facility, we want to create a Facility object in ELSA's database
+    for facility in facilities:
+        print "\n\nFacility: ", facility
+
+        # we need the url where the label exists
+        facility_url = get_starbase_url('facility', facility)
+        print "URL: ", facility_url
+
+        # we want our crawler to grab specified information from the labels
+        # these details about the investigation will be used to fill the
+        # ELSA database
+        #
+        #   definition:
+        #     facility_detail = [type_of, name, version, file extension]
+        #
+        facility_detail = get_product_detail(facility)
+        print "Facility Detail: ", facility_detail
+
+
+        # Get product dictionary
+        product_dict = get_product_dict(facility_url)
+
+        #
+        #  get_or_create returns a 2-tuple containing the object and a boolean indicating whether
+        #  or not the object was created.
+        #    i = ( object, created )
+        f = Facility.objects.get_or_create(
+                name=facility_detail[1], 
+                type_of=facility_detail[0], 
+            )
+        print f
+
+        # If the object was retrieved, ie. already exists in our database, we want to make sure 
+        # the database object is the latest version of the product, designated by the vid (or 
+        # version_id)
+        if f[1] == False :
+            # Compare if the vid in our facility detail is greater than the vid associated
+            # with our facility object, f.
+            if( f[0].vid < product_dict['vid'] ):
+                print "HIGHER VID FOUND: ", f[0].vid, " < ", product_dict['vid']
+                print type(f[0].vid), type(product_dict['vid'])
+
+                # Modify object i to be the last version of i
+                f[0].update_version(product_dict)
+                created.append(f[0])
+
+                print "MODIFIED OBJ: ", f[0].vid, f[0].lid
+
+
+        # if the object was created, then it is the first product of its name
+        # and instrument host type so we want to do a few things:
+        #     1. Get the investigation that the instrument host is related to
+        #     2. Get the instruments that the instrument host is related to
+        #     3. Get the targets that the isntrument host is related to   
+        #     4. Save and append object to our created list so we can
+        #        print what was created later for our own sanity
+ 
+        else:
+
+
+
+            # Get instrument object(s)
+            instrument_set = get_internal_references(product_dict, 'instrument_host', 'instrument')
+
+            # Add instrument object(s) relation to instrument host object
+            if len(instrument_set) == 0:
+                print "No instruments found for instrument host"
+            else:
+                for ins in instrument_set:
+                    f[0].instruments.add(ins)
+
+
+
+
+            # Save and append instrument host object
+            f[0].vid = product_dict['vid']
+            f[0].lid = product_dict['lid']
+            f[0].starbase_label = facility_url
+            f[0].save()
+            created.append(f[0])
+            print "New elt f: ", f[0].vid, f[0].lid
+
+
+           
+
+
+def telescope_crawl():
+
+    # STARBASE FIXES
+
+
+    # FACILITY CRAWL
+    #     1. Create Telescope object
+    #     2. Relate Facility to Telescope
+
+
+    # grab the whole list of facilities from Starbase
+    telescopes = get_product_list('telescope')
+
+    # for each telescope, we want to create a Telescope object in ELSA's database
+    for telescope in telescopes:
+        print "\n\nTelescope: ", telescope
+
+        # we need the url where the label exists
+        telescope_url = get_starbase_url('telescope', telescope)
+        print "URL: ", telescope_url
+
+        # we want our crawler to grab specified information from the labels
+        # these details about the investigation will be used to fill the
+        # ELSA database
+        #
+        #   definition:
+        #     telescope_detail = [type_of, name, version, file extension]
+        #
+        telescope_detail = get_product_detail(telescope)
+        print "Telescope Detail: ", telescope_detail
+
+
+        # Get product dictionary
+        product_dict = get_product_dict(telescope_url)
+
+        #
+        #  get_or_create returns a 2-tuple containing the object and a boolean indicating whether
+        #  or not the object was created.
+        #    i = ( object, created )
+        t = Telescope.objects.get_or_create(
+                name=telescope_detail[0], 
+            )
+        print t
+
+        # If the object was retrieved, ie. already exists in our database, we want to make sure 
+        # the database object is the latest version of the product, designated by the vid (or 
+        # version_id)
+        if t[1] == False :
+            # Compare if the vid in our telescope detail is greater than the vid associated
+            # with our telescope object, f.
+            if( t[0].vid < product_dict['vid'] ):
+                print "HIGHER VID FOUND: ", t[0].vid, " < ", product_dict['vid']
+                print type(t[0].vid), type(product_dict['vid'])
+
+                # Modify object i to be the last version of i
+                t[0].update_version(product_dict)
+                created.append(t[0])
+
+                print "MODIFIED OBJ: ", t[0].vid, t[0].lid
+
+
+        # if the object was created, then it is the first product of its name
+        # and instrument host type so we want to do a few things:
+        #     1. Get the facility that the target is related to
+        #     4. Save and append object to our created list so we can
+        #        print what was created later for our own sanity
+ 
+        else:
+
+
+
+            # Get facility object(s)
+            facility_set = get_internal_references(product_dict, 'telescope', 'facility')
+
+            # Add facility object(s) relation to telescope object
+            if len(facility_set) == 0:
+                print "No instruments found for instrument host"
+            else:
+                for fac in facility_set:
+                    t[0].facilities.add(fac)
+
+
+
+
+            # Save and append instrument host object
+            t[0].vid = product_dict['vid']
+            t[0].lid = product_dict['lid']
+            t[0].starbase_label = telescope_url
+            t[0].save()
+            created.append(t[0])
+            print "New elt t: ", t[0].vid, t[0].lid
 
 
 
@@ -641,9 +807,12 @@ def populate():
     # created is a list of elements that were created by this population script
     # currently created is empty bc nothing has been added to it.
     #investigation_crawl()
-    #instrument_host_crawl()
     #instrument_crawl()
-    target_crawl()
+    #target_crawl()
+    #instrument_host_crawl()
+    #facility_crawl()
+    telescope_crawl()
+
 
     for elt in created:
         print "New object: {0}".format(elt.name)

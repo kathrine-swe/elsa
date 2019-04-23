@@ -181,11 +181,14 @@ class InvestigationForm(forms.Form):
 
 class InstrumentHostForm(forms.Form):
 
+    instrument_host = forms.ModelChoiceField(queryset = Instrument_Host.objects.all(), required=True)
+
     def __init__(self, *args, **kwargs):
         self.pk_inv = kwargs.pop('pk_inv')
-        super(InstumentHostForm,self).__init__(*args, **kwargs)
-        self.fields['instrument_host'].widget = forms.ModelChoiceField(queryset=Instrument_Host.objects.filter(investigation=pk_inv), required=True)
+        super(InstrumentHostForm,self).__init__(*args, **kwargs)
+        self.fields['instrument_host'] = forms.ModelChoiceField(queryset=Instrument_Host.objects.filter(investigation=self.pk_inv), required=True)
 
+######### HERE : https://medium.com/@MicroPyramid/understanding-djangos-model-fromsets-in-detail-and-their-advanced-usage-131dfe66853d
 
 """
     Product_Bundle
