@@ -90,6 +90,8 @@ class Investigation(models.Model):
     # Attributes used to manage Investigation object
     #objects = InvestigationManager()
 
+
+
     def update_version(self, product_dict):
         self.vid = product_dict['vid']
         self.lid = product_dict['lid']
@@ -98,152 +100,6 @@ class Investigation(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
-
-
-"""
-14.2  Facility
-
-Root Class:Tagged_NonDigital_Object
-Role:Concrete
-
-Class Description:The Facility class provides a name and address for a terrestrial observatory or laboratory.
-
-Steward:pds
-Namespace Id:pds
-Version Id:1.0.0.0
-  	Entity 	Card 	Value/Class 	Ind
-Hierarchy	Tagged_NonDigital_Object	 	 	 
-         	. TNDO_Context	 	 	 
- 	        . . Facility	 	 	 
-Subclass	none	 	 	 
-Attribute	address	        0..1	 	 
- 	        country	        0..1	 	 
- 	        description	0..1	 	 
- 	        name	        0..1	 	 
- 	        type	        1	Laboratory	 
- 	 	         	        Observatory	 
-
-Inherited Attribute	none	 	 	 
-Association	        data_object	1	Physical_Object	 
-Inherited Association	none	 	 	 
-
-Referenced from	Product_Context	 	 	 
-"""
-@python_2_unicode_compatible
-class Facility(models.Model):
-    FACILITY_TYPES = [
-        ('Laboratory','Laboratory'),
-        ('Observatory','Observatory'),
-    ]
-
-    # Relational attribute
-    investigation = models.ManyToManyField(Investigation)
-
-    # Characteristic attributes
-    lid = models.CharField(max_length=MAX_CHAR_FIELD)
-    name = models.CharField(max_length=MAX_CHAR_FIELD)
-    type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=FACILITY_TYPES) 
-    version = models.FloatField(default=1.0)
-
-    vid = models.FloatField(default=1.0)
-    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
-
-    # Accessors
-    def name_lid_case(self):
-        # Convert name to lower case
-        name_edit = self.name.lower()
-        # Convert spaces to underscores
-        name_edit = replace_all(name_edit, ' ', '_')
-
-    # Meta
-    def __str__(self):
-        return self.name
-
-
-
-
-"""
-14.4  Instrument_Host
-
-Root Class:Tagged_NonDigital_Object
-Role:Concrete
-
-Class Description:The Instrument Host class provides a description of the physical object upon which an instrument is mounted.
-
-Steward:pds
-Namespace Id:pds
-Version Id:1.3.0.0
-  	Entity 	Card 	Value/Class 	Ind
-Hierarchy	Tagged_NonDigital_Object	 	 	 
-        	. TNDO_Context	 	 	 
-        	. . Instrument_Host	 	 	 
-Subclass	none	 	 	 
-
-Attribute	description	                        1	 	 
-        	instrument_host_version_id *Deprecated*	0..1	 	 
-        	naif_host_id	                        0..1	 	 
-        	name	                                0..1	 	 
-        	serial_number	                        0..1	 	 
-        	type	                                1	Earth Based	 
- 	 	 	                                        Earth-based	 
- 	 	 	                                        Lander	 
- 	 	 	                                        Rover	 
- 	 	 	                                        Spacecraft	 
-        	version_id *Deprecated*	                0..1	 	 
-
-Inherited Attribute	none	 	 	 
-Association     	data_object	1	Physical_Object	 
-Inherited Association	none	 	 	 
-
-Referenced from	Product_Context	 	 	 
-"""
-class Instrument_HostManager(models.Manager):
-    def update_version(self, product_dict):
-        self.vid = product_dict['vid']
-        self.lid = product_dict['lid']
-        self.starbase_label = product_dict['url']
-        self.save()
-
-@python_2_unicode_compatible
-class Instrument_Host(models.Model):
-    INSTRUMENT_HOST_TYPES = [
-        ('Earth Based','Earth Based'),
-        ('Lander', 'Lander'),
-        ('Rover', 'Rover'),
-        ('Spacecraft','Spacecraft'),
-        ('unk','unk'), # This is only for a fix in Starbase and should be deleted once fixed
-    ]
-
-    # Relational Attributes
-    investigation = models.ManyToManyField(Investigation)
-
-    # Attributes used for crawler
-    lid = models.CharField(max_length=MAX_CHAR_FIELD)
-    name = models.CharField(max_length=MAX_CHAR_FIELD)
-    type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=INSTRUMENT_HOST_TYPES)
-    vid = models.FloatField(default=1.0)
-    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
-
-    # Attributes used to manage Instrument Host object
-    #objects = Instrument_HostManager()
-
-
-
-    # Meta
-    def __str__(self):
-        return self.name
-
-    def update_version(self, product_dict):
-        self.vid = product_dict['vid']
-        self.lid = product_dict['lid']
-        self.starbase_label = product_dict['url']
-        self.save()
-
-
-
 
 
 
@@ -418,8 +274,6 @@ class Instrument(models.Model):
         ('X-ray Fluorescence Spectrometer','X-ray Fluorescence Spectrometer'),
     ]
     # Relational Attributes
-    #investigation = models.ManyToManyField(Investigation)
-    instrument_host = models.ManyToManyField(Instrument_Host)
 
     # Attributes used for crawler
     lid = models.CharField(max_length=MAX_CHAR_FIELD)
@@ -542,8 +396,6 @@ class Target(models.Model):
         ('Trans-Neptunian Object','Trans-Neptunian Object'),
     ]
     # Relational Attributes
-    #investigation = models.ManyToManyField(Investigation)
-    instrument_host = models.ManyToManyField(Instrument_Host)
 
     # Attributes used for crawler
     lid = models.CharField(max_length=MAX_CHAR_FIELD)
@@ -564,6 +416,209 @@ class Target(models.Model):
         self.lid = product_dict['lid']
         self.starbase_label = product_dict['url']
         self.save()
+
+
+
+
+
+
+
+
+"""
+14.4  Instrument_Host
+
+Root Class:Tagged_NonDigital_Object
+Role:Concrete
+
+Class Description:The Instrument Host class provides a description of the physical object upon which an instrument is mounted.
+
+Steward:pds
+Namespace Id:pds
+Version Id:1.3.0.0
+  	Entity 	Card 	Value/Class 	Ind
+Hierarchy	Tagged_NonDigital_Object	 	 	 
+        	. TNDO_Context	 	 	 
+        	. . Instrument_Host	 	 	 
+Subclass	none	 	 	 
+
+Attribute	description	                        1	 	 
+        	instrument_host_version_id *Deprecated*	0..1	 	 
+        	naif_host_id	                        0..1	 	 
+        	name	                                0..1	 	 
+        	serial_number	                        0..1	 	 
+        	type	                                1	Earth Based	 
+ 	 	 	                                        Earth-based	 
+ 	 	 	                                        Lander	 
+ 	 	 	                                        Rover	 
+ 	 	 	                                        Spacecraft	 
+        	version_id *Deprecated*	                0..1	 	 
+
+Inherited Attribute	none	 	 	 
+Association     	data_object	1	Physical_Object	 
+Inherited Association	none	 	 	 
+
+Referenced from	Product_Context	 	 	 
+"""
+class Instrument_HostManager(models.Manager):
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
+@python_2_unicode_compatible
+class Instrument_Host(models.Model):
+    INSTRUMENT_HOST_TYPES = [
+        ('Earth Based','Earth Based'),
+        ('Lander', 'Lander'),
+        ('Rover', 'Rover'),
+        ('Spacecraft','Spacecraft'),
+        ('unk','unk'), # This is only for a fix in Starbase and should be deleted once fixed
+    ]
+
+    # Relational Attributes
+    investigations = models.ManyToManyField(Investigation)
+    instruments = models.ManyToManyField(Instrument)
+    targets = models.ManyToManyField(Target)
+
+    # Attributes used for crawler
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
+    name = models.CharField(max_length=MAX_CHAR_FIELD)
+    type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=INSTRUMENT_HOST_TYPES)
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
+
+    # Attributes used to manage Instrument Host object
+    #objects = Instrument_HostManager()
+
+
+
+    # Meta
+    def __str__(self):
+        return self.name
+
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
+
+
+
+
+
+
+"""
+14.2  Facility
+
+Root Class:Tagged_NonDigital_Object
+Role:Concrete
+
+Class Description:The Facility class provides a name and address for a terrestrial observatory or laboratory.
+
+Steward:pds
+Namespace Id:pds
+Version Id:1.0.0.0
+  	Entity 	Card 	Value/Class 	Ind
+Hierarchy	Tagged_NonDigital_Object	 	 	 
+         	. TNDO_Context	 	 	 
+ 	        . . Facility	 	 	 
+Subclass	none	 	 	 
+Attribute	address	        0..1	 	 
+ 	        country	        0..1	 	 
+ 	        description	0..1	 	 
+ 	        name	        0..1	 	 
+ 	        type	        1	Laboratory	 
+ 	 	         	        Observatory	 
+
+Inherited Attribute	none	 	 	 
+Association	        data_object	1	Physical_Object	 
+Inherited Association	none	 	 	 
+
+Referenced from	Product_Context	 	 	 
+"""
+@python_2_unicode_compatible
+class Facility(models.Model):
+    FACILITY_TYPES = [
+        ('Laboratory','Laboratory'),
+        ('Observatory','Observatory'),
+    ]
+
+    # Relational attribute
+    instrument = models.ManyToManyField(Instrument)
+
+    # Characteristic attributes
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
+    name = models.CharField(max_length=MAX_CHAR_FIELD)
+    type_of = models.CharField(max_length=MAX_CHAR_FIELD, choices=FACILITY_TYPES) 
+    version = models.FloatField(default=1.0)
+
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
+
+    # Accessors
+    def name_lid_case(self):
+        # Convert name to lower case
+        name_edit = self.name.lower()
+        # Convert spaces to underscores
+        name_edit = replace_all(name_edit, ' ', '_')
+
+    # Meta
+    def __str__(self):
+        return self.name
+
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
+
+
+
+
+
+
+"""
+Telescope	 	 
+"""
+class TelescopeManager(models.Manager):
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
+@python_2_unicode_compatible
+class Telescope(models.Model):
+
+    # Relational Attributes
+    facilities = models.ManyToManyField(Facility)
+
+    # Attributes used for crawler
+    lid = models.CharField(max_length=MAX_CHAR_FIELD)
+    name = models.CharField(max_length=MAX_CHAR_FIELD)
+    vid = models.FloatField(default=1.0)
+    starbase_label = models.CharField(max_length=MAX_CHAR_FIELD)
+
+    # Attributes used to manage Instrument Host object
+    #objects = Instrument_HostManager()
+
+
+
+    # Meta
+    def __str__(self):
+        return self.name
+
+    def update_version(self, product_dict):
+        self.vid = product_dict['vid']
+        self.lid = product_dict['lid']
+        self.starbase_label = product_dict['url']
+        self.save()
+
+
+
 
 
 

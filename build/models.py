@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from shutil import copyfile
 from .chocolate import *
+from context.models import *
 import datetime
 import shutil
 import os
@@ -207,6 +208,15 @@ class Bundle(models.Model):
     # To implement where the default is the most current version, we first need to grab all versions
     # and then grab the one with the highest number.
 
+    # Context Attributes
+    investigations = models.ManyToManyField(Investigation)
+    instrument_hosts = models.ManyToManyField(Instrument_Host)
+    instruments = models.ManyToManyField(Instrument)
+    targets = models.ManyToManyField(Target)
+
+
+    
+
 
     def __str__(self):
         return self.name
@@ -365,6 +375,7 @@ class Bundle(models.Model):
         print citation_information_set
         print document_set
         print data_set
+
 
 
 
