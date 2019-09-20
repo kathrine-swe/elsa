@@ -160,7 +160,7 @@ def build(request):
             bundle.save()
             print 'Bundle model object: {}'.format(bundle)
 
-            # Build PDS4 Ccmpliant Bundle directory in User Directory.
+            # Build PDS4 Compliant Bundle directory in User Directory.
             bundle.build_directory()
             print 'Bundle directory: {}'.format(bundle.directory())
 

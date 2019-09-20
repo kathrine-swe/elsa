@@ -1,5 +1,3 @@
-
-
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'elsa.settings')
 
@@ -23,20 +21,29 @@ STARBASE_CONTEXT = 'https://starbase.jpl.nasa.gov/pds4/context-pds4/'
 #     This requires upkeep by a developer
 #     Below is a list of current vids
 #     If this list is not up to date, this function will miss things.
-CURRENT_VIDS = ['1.0', '1.1'] # max vid so far is 1.13 
+#
+#
+# Note: We could make this more programmer friendly by creating a function that searches
+# for the max vid; however it is a lot of data to scour through to find the max
+# vid of all products for very little return at this point. This script is more efficient
+# in time by simply updating it by hand at the current moment. This could always change.
+CURRENT_VIDS = ['1.0', '1.1'] # max vid so far is 1.1
 
 
 
 
+
+def list_of_tuples(list1, list2):
 """
 Takes two lists and makes them one list of 2-tuples.
 Example: list1 = [ 0, 1, 2], list2 = [ 'a', 'b', 'c'], list3 = ['elsa', 'pds', 'atmos']
 		The returned list is then [ (0, 'a', 'elsa'), (1, 'b', 'pds'), (2, 'c', 'atmos') ]
 """
-def list_of_tuples(list1, list2):
     return list(map(lambda x, y: (x,y), list1, list2))
 
 
+
+def get_product_list(context_type):
 """
 get_product_list(string)
 
@@ -45,7 +52,6 @@ input: a string containing the type of context product the user is looking for
 
 output: a list of all products for that context type
 """
-def get_product_list(context_type):
     STARBASE_PRODUCTS = STARBASE_CONTEXT + context_type
     html_arr = urllib2.urlopen(STARBASE_PRODUCTS).readlines()
     product_list = []
@@ -56,6 +62,8 @@ def get_product_list(context_type):
             product_list.append(product.text)
     return product_list
 
+
+def get_product_dict(url):
 """
 get_product_dict(url)
 
@@ -64,7 +72,6 @@ input: a string representation of the url where the product label is located
 output: a dictionary containing the product's url, lid, vid, and internal references.
 
 """
-def get_product_dict(url):
 
     product_dict = {}
     lid_references = []
@@ -128,6 +135,9 @@ def get_product_dict(url):
     return product_dict
 
 
+
+def get_internal_references(product_dict, source_product, target_product):
+"""
 # get_internal_refs
 # This function finds a specific type of internal reference from a given type of product.
 # It will return a list, empty or nonempty.
@@ -141,8 +151,7 @@ def get_product_dict(url):
 # 
 # output:
 #     a list of objects of type target_product that are related to source_product
-def get_internal_references(product_dict, source_product, target_product):
-
+"""
     # Declare list of internal references to be returned to the user containing
     # all of the internal references that match the given source product to target product
     # relation.
@@ -169,14 +178,20 @@ def get_internal_references(product_dict, source_product, target_product):
 
 
 def get_or_none_lid(model, l):
+"""
+get_or_none_lid gets a given ELSA model object by its PDS4 logical identifier, lid
+"""
     try:
         return model.objects.get(lid=l)
     except model.DoesNotExist:
         return None
 
 
-# Finds the associated object of type product_type given the product's lid
+
 def get_lid_to_object_queryset(product_type, lid):
+"""
+# Finds the associated ELSA object of type product_type given the product's lid
+"""
     print product_type
     print lid
     if product_type == 'investigation':
@@ -202,8 +217,11 @@ def get_lid_to_object_queryset(product_type, lid):
     else:
         print "Lid to object queryset error: Uknown object"
     
-# Constructs the Starbase url for a product of a given name and type
+
 def get_starbase_url(product_type, product_name):
+"""
+# Constructs the Starbase url for a product of a given name and type
+"""
     return STARBASE_CONTEXT + product_type + '/' + product_name
 
 # Gets a detail of the product given the product name found on Starbase
@@ -211,17 +229,25 @@ def get_starbase_url(product_type, product_name):
 #     investigation_detail = [type_of, name, ..., version, file extension]
 #
 def get_product_detail(product_name):
+"""
+# Gets a detail of the product given the product name found in the product's Starbase label
+#   definition:
+#     investigation_detail = [type_of, name, ..., version, file extension]
+#
+"""
         product_detail = product_name.split('.')
         print product_detail
         product_detail[2] = float(product_detail[-3][-1:] + '.' + product_detail[-2])
         product_detail[1] = product_detail[1][:-2]
         return product_detail
 
-#
-#
-#
-def investigation_crawl():
 
+def investigation_crawl():
+"""
+investigation_crawl crawls JPL's Starbase repo for for the latest version of an investigation
+label for each label listed in the investigation repo in Starbase Context.
+This information is used to create an investigation in ELSAs database.
+"""
     # STARBASE FIXES
     i = Investigation.objects.get_or_create(name='support_archives', type_of='mission', lid='urn:nasa:pds:context:investigation:mission.support_archives', vid=1.0)
     if i[1] == True:
@@ -301,6 +327,11 @@ def investigation_crawl():
 
 
 def instrument_host_crawl():
+"""
+instrument_host_crawl crawls JPL's Starbase repo for the latest version of an instrument host
+label for each label listed in the instrument host repo in Starbase Context.
+This information is used to create an instrument host object in ELSAs database.
+"""
 
     # STARBASE FIXES
     j = Instrument_Host.objects.get_or_create(name='unk', type_of='unk', lid='urn:nasa:pds:context:instrument_host:unk.unk', vid=1.0)
@@ -418,6 +449,11 @@ def instrument_host_crawl():
             print "New elt i: ", i[0].vid, i[0].lid
 
 def instrument_crawl():
+"""
+instrument_crawl crawls JPL's Starbase repo for the latest version of an instrument
+label for each label listed in the instrument repo in Starbase Context.
+This information is used to create an instrument object in ELSAs database.
+"""
     # INSTRUMENT CRAWL
     # grab the whole list of instruments from Starbase
     instruments = get_product_list('instrument')
@@ -491,6 +527,11 @@ def instrument_crawl():
 
 
 def target_crawl():
+"""
+target_crawl crawls JPL's Starbase repo for the latest version of a target
+label for each label listed in the target repo in Starbase Context.
+This information is used to create an target object in ELSAs database.
+"""
     # TARGET CRAWL
     # grab the whole list of targets from Starbase
     targets = get_product_list('target')
@@ -572,7 +613,11 @@ def target_crawl():
 
 
 def facility_crawl():
-
+"""
+facility_crawl crawls JPL's Starbase repo for the latest version of a facility
+label for each label listed in the facility repo in Starbase Context.
+This information is used to create a facility host object in ELSAs database.
+"""
     # STARBASE FIXES
 
 
@@ -671,7 +716,11 @@ def facility_crawl():
 
 
 def telescope_crawl():
-
+"""
+telescope_crawl crawls JPL's Starbase repo for the latest version of a telescope
+label for each label listed in the telescope repo in Starbase Context.
+This information is used to create a telescope object in ELSAs database.
+"""
     # STARBASE FIXES
 
 
@@ -764,53 +813,19 @@ def telescope_crawl():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def populate():
 """
 This is the script to autopopulate context products.
 The context types covered in this script are:
     - investigation
 """
-def populate():
-
     # created is a list of elements that were created by this population script
     # currently created is empty bc nothing has been added to it.
-    #investigation_crawl()
-    #instrument_crawl()
-    #target_crawl()
-    #instrument_host_crawl()
-    #facility_crawl()
+    investigation_crawl()
+    instrument_crawl()
+    target_crawl()
+    instrument_host_crawl()
+    facility_crawl()
     telescope_crawl()
 
 

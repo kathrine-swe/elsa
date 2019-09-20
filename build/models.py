@@ -178,8 +178,7 @@ class Version(models.Model):
 
 
 
-"""
-"""
+
 @python_2_unicode_compatible
 class Bundle(models.Model):
     """
@@ -206,7 +205,7 @@ class Bundle(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     version = models.ForeignKey(Version, on_delete=models.CASCADE)
     # To implement where the default is the most current version, we first need to grab all versions
-    # and then grab the one with the highest number.
+    # and then grab the one with the highest number. This variable could easily be stored somewhere.
 
     # Context Attributes
     investigations = models.ManyToManyField(Investigation)
@@ -220,9 +219,6 @@ class Bundle(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
     """
     - absolute_url
       Returns the url to the Bundle Detail page.
@@ -241,23 +237,25 @@ class Bundle(models.Model):
 
 
 
+
+    def name_title_case(self):          
     """
     - name_title_case
       Returns the bundle name in normal Title case with spaces.
     """
-    def name_title_case(self):          
         name_edit = self.name
         name_edit = replace_all(name_edit, '_', ' ')
         return name_edit.title()
 
 
 
+
+    def name_directory_case(self):
     """
     - name_directory_case
       Returns the bundle name in PDS4 compliant directory case with spaces.
       This is lid case with '_bundle' at the end.
     """
-    def name_directory_case(self):
 
         # self.name is in title case with spaces
         name_edit = self.name
@@ -287,6 +285,8 @@ class Bundle(models.Model):
         # Now we are returning {name_of_bundle} where {name_of_bundle} is lowercase with underscores rather than spaces
         return name_edit
 
+
+    def name_lid_case(self):
     """
     name_lid_case
          - Returns the name in proper lid case.
@@ -294,9 +294,10 @@ class Bundle(models.Model):
              - Allowed characters: lower case letters, digits, dash, period, underscore
              - Delimiters are colons (So no delimiters in name).
     """
-    def name_lid_case(self):
         return self.name_file_case()
 
+    """
+    """
     def lid(self):
         return 'urn:{0}:{1}'.format(self.user.userprofile.agency, self.name_lid_case())
 
@@ -306,6 +307,9 @@ class Bundle(models.Model):
         build_directory currently is not working.
     """
     def build_directory(self):
+    """ 
+        build_directory currently is not working.
+    """
         user_path = os.path.join(settings.ARCHIVE_DIR, self.user.username)
         print user_path
         bundle_path = os.path.join(user_path, self.name_directory_case())
@@ -315,13 +319,14 @@ class Bundle(models.Model):
 
 
 
+
+    def remove_bundle(self):
     """
         remove_bundle removes the bundle directory and all of its contents from the user's directory.  If 
         the directory was removed, then the bundle model object is deleted from the ELSA database.  The 
         function then returns status true if everything was removed correctly.
 
     """
-    def remove_bundle(self):
         # Declarations    
         debug_status = True
         complete_removal_status = False
@@ -356,10 +361,11 @@ class Bundle(models.Model):
         return complete_removal_status
 
 
+
+    def update(self, product):
     """
        update is used when a new label is being created for a product. Given a product, update will see which objects (whether that be other products or individual components of a label like an alias) are currently associated with the bundle and ensure all of the current metadata will be found on the new label being created for the given product.
     """
-    def update(self, product):
 
         # Components of labels
         alias_set = Alias.objects.filter(bundle=self)
@@ -463,6 +469,9 @@ class Collections(models.Model):
 
 
 
+
+@python_2_unicode_compatible
+class Product_Bundle(models.Model):
 """
 15.1  Product_Bundle
 
@@ -491,8 +500,6 @@ Association	        context_area	        0..1	Context_Area
 Inherited Association	has_identification_area	1	Identification_Area	 
 Referenced from	none	 	 	 
 """
-@python_2_unicode_compatible
-class Product_Bundle(models.Model):
     bundle = models.OneToOneField(Bundle, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -505,17 +512,19 @@ class Product_Bundle(models.Model):
         return name_edit
 
     
+
+    def label(self):
     """
         label gives the physical location of the label on atmos (or wherever).  Since Product_Bundle is located within the bundle directory, our path is .../user_directory_here/bundle_directory_here/product_bundle_label_here.xml.
     """
-    def label(self):
         return os.path.join(self.bundle.directory(), self.name_file_case())
 
 
+
+    def build_base_case(self):
     """
         build_base_case copies the base case product_bundle template (versionless) into bundle dir
     """
-    def build_base_case(self):
 
         
         # Locate base case Product_Bundle template found in templates/pds4_labels/base_case/product_bundle
@@ -528,6 +537,8 @@ class Product_Bundle(models.Model):
         
         return
         
+
+    def fill_base_case(self, root):
     """
         fill_base_case is the initial fill given the bundle name, version, and collections.
 
@@ -546,7 +557,6 @@ class Product_Bundle(models.Model):
                   self (like itself).
     
     """
-    def fill_base_case(self, root):
         Product_Bundle = root
  
         # Fill in Identification_Area
@@ -571,6 +581,8 @@ class Product_Bundle(models.Model):
         
         return Product_Bundle
 
+
+    def build_internal_reference(self, root, relation):
     """
         build_internal_reference builds and fills the Internal_Reference information within the 
         Reference_List of Product_Bundle.  The relation is used within reference_type to associate what 
@@ -578,8 +590,6 @@ class Product_Bundle(models.Model):
         ELSA, like Document.  The possible relations as of V1A00 are errata, document, investigation, 
         instrument, instrument_host, target, resource, associate.
     """
-    def build_internal_reference(self, root, relation):
-
         Reference_List = root.find('{}Reference_List'.format(NAMESPACE))
 
         Internal_Reference = etree.SubElement(Reference_List, 'Internal_Reference')
@@ -603,6 +613,9 @@ class Product_Bundle(models.Model):
 
 
 
+
+@python_2_unicode_compatible
+class Product_Collection(models.Model):
 """
 15.2  Product_Collection
 
@@ -639,8 +652,6 @@ Inherited Association	has_identification_area	1	Identification_Area
 
 Referenced from	none	 	 	 
 """
-@python_2_unicode_compatible
-class Product_Collection(models.Model):
     COLLECTION_CHOICES = (
 
         ('Document','Document'),
@@ -666,15 +677,18 @@ class Product_Collection(models.Model):
         return "{0}\nProduct Collection for {1} Collection".format(self.collections.bundle, self.collection)
     
 
+
+    def directory(self):
     """
         This returns the directory path of all collections but the data collection.
         To return any of the data collection directory paths, see directory_data.
     """
-    def directory(self):
         name_edit = self.collection.lower()
         collection_directory = os.path.join(self.collections.bundle.directory(), name_edit)
         return collection_directory
 
+
+    def directory_data(self, data):
     """
         Note that directory_data requires a data object to be passed to find the directory path.
         This is because the data collection path has the processing level in its name.  ELSA waits
@@ -685,30 +699,32 @@ class Product_Collection(models.Model):
         is a special case.  Later down the road, you may find this was a bad idea.  Alas, other
         collections such as Browse, Calibration, etc., have yet to be touched.
     """
-    def directory_data(self, data):
         name_edit = 'data_{1}'.format(self.collection.lower(), data.processing_level.lower())
         collection_directory = os.path.join(self.collections.bundle.directory(), name_edit)
         return collection_directory
 
+        
+    def name_label_case(self):
     """
        name_label_case returns the name in label case with the proper .xml extension.
-    """        
-    def name_label_case(self):
-
+    """
         # Append cleaned collection name to name edit for Product_Collection xml label
         name_edit = self.collection.lower()
         name_edit = 'collection_{}.xml'.format(name_edit)
         return name_edit
 
+    """
+    """
     def name_label_case_data(self, data):
         # Append cleaned collection name to name edit for Product_Collection xml label
         name_edit = 'collection_{}.xml'.format(self.collection.lower())
         return name_edit
 
+    def label(self):
+
     """
        label returns the physical label location in ELSAs archive
     """
-    def label(self):
         return os.path.join(self.directory(), self.name_label_case())
 
     def label_data(self, data):
@@ -749,6 +765,8 @@ class Product_Collection(models.Model):
         return
 
 
+
+    def fill_base_case(self, root):
     """
         Fillers follow a set flow.
             1. Input the root element of an XML label.
@@ -763,7 +781,6 @@ class Product_Collection(models.Model):
                 - Fill is easy.  Just fill it.. with the information from the model it was called on,
                   self (like itself).
     """
-    def fill_base_case(self, root):
         Product_Collection = root
          
         # Fill in Identification_Area
@@ -788,12 +805,12 @@ class Product_Collection(models.Model):
         
         return Product_Collection
 
+
+
+    def build_internal_reference(self, root, relation):
     """
         build_internal_reference builds and fills the Internal_Reference information within the Reference_List of Product_Collection.  The relation is used within reference_type to associate what the collection is related to, like collection_to_document.  Therefore, relation is a model object in ELSA, like Document.  The possible relations as of V1A00 are resource, associate, calibration, geometry, spice kernel, document, browse, context, data, ancillary, schema, errata, bundle, personnel, investigation, instrument, instrument_host, target.
     """
-
-    def build_internal_reference(self, root, relation):
-
         Reference_List = root.find('{}Reference_List'.format(NAMESPACE))
 
         Internal_Reference = etree.SubElement(Reference_List, 'Internal_Reference')
@@ -851,10 +868,11 @@ class Data(models.Model):
         return data_directory  
 
 
+
+    def label(self):
     """
        label returns the physical label location in ELSAs archive
     """
-    def label(self):
         return os.path.join(self.directory(), self.collection.name_label_case())
     """
 

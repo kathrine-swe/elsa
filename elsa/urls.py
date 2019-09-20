@@ -35,7 +35,6 @@ urlpatterns = [
     url(r'^', include('main.urls')),
     url(r'^accounts/', include('friends.urls')),
     url(r'^context/', include('context.urls')),
-    url(r'^student_lair/', include('blog.urls')),
     url(r'^build/', include('build.urls')),
     url(r'^review/', include('review.urls')),
     url(r'^tutorial/', include('tutorial.urls')),
